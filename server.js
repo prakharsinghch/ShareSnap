@@ -5,8 +5,12 @@ const app = express();
 const server = require("http").createServer(app);
 
 const io = require("socket.io")(server);
+const port = process.env.PORT || 5001;
 
-app.use(express.static(path.join(__dirname+"/public")));
+
+app.get('/', function(req,res){
+    res.sendFile(path.join(__dirname, '/public'));
+})
 
 io.on("connection", function(socket){
     socket.on("sender-join",function(data){
@@ -27,4 +31,5 @@ io.on("connection", function(socket){
     })
 });
 
-server.listen(5001);
+server.listen(port);
+console.log(`Server started at ${port}`)
